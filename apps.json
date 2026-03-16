@@ -1,0 +1,15 @@
+[
+    {
+      "url": "https://github.com/frappe/erpnext.git",
+      "branch": "version-16"
+    },
+    {
+        "url": "https://github.com/frappe/hrms",
+        "branch": "version-16"
+    },
+    {
+        "url": "https://github.com/fblasco1/frappe-club-managment",
+        "branch": "main"
+    }
+  ]
+  
