@@ -239,6 +239,8 @@ You can now login with user `Administrator` and the password you choose when cre
 Your website will now be accessible at location [development.localhost:8000](http://development.localhost:8000)
 Note: To start bench with debugger refer section for debugging.
 
+> Project-specific guide: see `docs/05-development/club-management-dev.md`.
+
 ### Setup bench / new site using script
 
 Most developers work with numerous clients and versions. Moreover, apps may be required to be installed by everyone on the team working for a client.
