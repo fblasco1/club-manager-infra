@@ -1,0 +1,43 @@
+---
+description: Core Frappe/ERPNext architecture rules. No core hacks, DocType-first, Bench package layout, PostgreSQL v14.
+globs:
+  - "apps/club_management/**/*.py"
+  - "apps/club_management/**/*.js"
+  - "apps/club_management/**/*.json"
+  - "development/frappe-bench/apps/club_management/**/*.py"
+  - "development/frappe-bench/apps/club_management/**/*.js"
+  - "development/frappe-bench/apps/club_management/**/*.json"
+alwaysApply: true
+---
+
+# Frappe Core Rules
+
+## No core hacks
+
+- NEVER modify `apps/frappe` or `apps/erpnext`.
+- All customization lives in the **custom app package**: `apps/club_management/club_management/` (inner `club_management` is the Python package created by `bench new-app`).
+- Extend behavior via this app’s **`hooks.py`** (`doc_events`, `override_doctype_class`, scheduled jobs, etc.).
+
+## Bench layout (documentation-aligned)
+
+- App folder on bench: `apps/club_management/`.
+- Code you edit: `apps/club_management/club_management/` → `hooks.py`, `modules.txt`, module folders (`members/`, `activities/`, …).
+- DocType path pattern: `club_management/<module>/doctype/<doctype_snake_case>/` with **`module`** in JSON matching the Frappe **Module** (see `modules.txt`).
+
+## DocType first
+
+- Lead with **DocType JSON** metadata when modeling behavior.
+- **Standard DocType** (Desk): ship **`*.json` + `*.py` + `*.js`** with client script as needed.
+- **Child DocType** (`istable`: 1): **`*.json` + `*.py` only** (no dedicated `*.js` form script for the child DocType).
+- **DocPerm:** include at least roles appropriate to the site (e.g. System Manager full, **All** read-only if lists are public). Adjust for **Secretaria**, **Socio**, etc.
+
+## PostgreSQL v14
+
+- Prefer `frappe.get_doc`, `frappe.get_all`, `frappe.db.get_value`.
+- Raw SQL must be **PostgreSQL** syntax, not MariaDB.
+- Avoid `frappe.db.commit()` in normal HTTP request handling.
+
+## Hooks and client
+
+- Server hooks used from controllers should be declared in **`hooks.py`** when Frappe expects central registration.
+- Desk client scripts: **`frappe.ui.form.on('DocType Name', { ... })`** with the exact DocType name.

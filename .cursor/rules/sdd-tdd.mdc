@@ -1,0 +1,30 @@
+---
+description: SDD + TDD. Specs before code; failing tests before production. Aligned with Bench app package paths.
+globs:
+  - "apps/club_management/**/*.py"
+  - "apps/club_management/**/*.md"
+  - "development/frappe-bench/apps/club_management/**/*.py"
+  - "development/frappe-bench/apps/club_management/**/*.md"
+alwaysApply: true
+---
+
+# SDD + TDD Rules
+
+## Non-negotiable order
+
+1. Spec en **`club_management/specs/<feature>.md`** dentro del paquete de la app (p. ej. en este repo: `development/frappe-bench/apps/club_management/club_management/specs/`) usando **Given / When / Then**.
+2. Failing test in **`test_<something>.py`** that encodes the spec.
+3. Minimum production code (DocType JSON, Python, JS if applicable) to pass.
+4. Refactor without breaking tests.
+
+## Never skip
+
+- No production logic in `.py` or `.js` without a failing test that justified it.
+- No new fields, DocTypes, or hooks “just in case” without spec + test.
+
+## Where tests live (Frappe)
+
+- Next to the DocType: `apps/club_management/club_management/<module>/doctype/<name>/test_<name>.py`
+- Integration / cross-DocType: `apps/club_management/club_management/tests/test_<area>.py`
+
+Use **`FrappeTestCase`** and site DB rollback patterns as in [Frappe automated testing](https://docs.frappe.io/framework/user/en/guides/automated-testing) guidance.

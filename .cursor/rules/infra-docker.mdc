@@ -1,0 +1,39 @@
+---
+description: Docker / bench / Compose for club-manager-infra (frappe_docker-style). Migrations, env files, CI.
+globs:
+  [
+    "development/**",
+    "overrides/**",
+    "images/**",
+    "docs/**",
+    "scripts/**",
+    "compose.yaml",
+    "*.yml",
+    "*.yaml",
+    "*.hcl",
+    "Dockerfile*",
+  ]
+alwaysApply: false
+---
+
+# Infrastructure Rules
+
+## Repos and folders
+
+- **Infra repo** clone name: prefer **`club-manager-infra`**. A folder like **`club_manager_infra`** is the same role; keep one convention per team.
+- Layout follows **frappe_docker** patterns: `compose.yaml`, `development/`, `overrides/`, `images/`, `devcontainer-example/`, `resources/`.
+
+## Bench inside containers
+
+- Run **`bench`** in the service that mounts the bench (often **`backend`**; some stacks use **`frappe`** — follow the project’s README).
+- Examples: `docker compose exec <service> bench migrate`, `bench --site <site> run-tests --app club_management`.
+
+## Schema and assets
+
+- After **DocType JSON** changes: **`bench migrate`** for each site.
+- After **`.js` / `.css`** in the app: `bench build --app club_management` when the image does not rebuild assets automatically.
+
+## Secrets and CI
+
+- Never commit **`.env`**. Extend **`example.env`** when adding variables.
+- CI: keep **`pre-commit`** (ruff, eslint, prettier, …) and GitHub Actions workflows green.

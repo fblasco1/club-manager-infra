@@ -1,0 +1,34 @@
+---
+description: Security — whitelist permissions, guest endpoints, data isolation, SIRO immutability, XSS.
+globs:
+  - "apps/club_management/**/*.py"
+  - "apps/club_management/**/*.js"
+  - "development/frappe-bench/apps/club_management/**/*.py"
+  - "development/frappe-bench/apps/club_management/**/*.js"
+alwaysApply: true
+---
+
+# Security Rules
+
+## Whitelist (authenticated)
+
+- **`@frappe.whitelist()`** (default, login required): before returning or mutating protected data, enforce **`frappe.has_permission(...)`** (or explicit role/doc checks that are **documented and tested**).
+- Fail closed: no broad “fetch by name” without permission on that DocType/row.
+
+## Whitelist (`allow_guest=True`)
+
+- **Not** an excuse to skip access control. Use a **spec-defined** gate: expiring token, cryptographic nonce, site-configured secret flow, etc.
+- Cover **abuse** cases in tests (wrong token, replay, cross-document access).
+
+## Data isolation
+
+- Portal and REST patterns: scope queries by **current user** and **User Permission** / custom rules so one **Socio** cannot read another’s rows.
+- Test with **two** users/fixtures.
+
+## SIRO payment IDs
+
+- Persist IDs in **Payment Log** (or equivalent); **check existence** before insert; **never** reuse or overwrite IDs for a different payment.
+
+## XSS (carnets, portal, Desk)
+
+- Avoid `innerHTML` with raw user fields; use escaping (`|e` in Jinja, `frappe.utils.escape_html` in JS where applicable).

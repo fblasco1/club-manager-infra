@@ -1,0 +1,31 @@
+---
+description: Club domain — Socio, subscriptions, Family/Grupo Familiar, Cost Centers, SIRO. Align DocType names with existing app.
+globs:
+  - "apps/club_management/**"
+  - "development/frappe-bench/apps/club_management/**"
+alwaysApply: false
+---
+
+# Club Domain Rules
+
+## Naming in this project
+
+- The product DocType for members is **`Socio`** (Spanish). Skills that mention **Member** refer to the **domain concept**; implement links and permissions against **`Socio`** unless you are migrating names in a dedicated sprint.
+- **Family / Grupo Familiar:** sibling and discount rules MUST use a **stable link** (`grupo_familiar`, **Family** DocType, or `parent_id`), never surname-only heuristics.
+
+## Cost Centers (multi-unit)
+
+Attribute revenue to **Sports | Gym | Restaurant | Rentals** (or site-defined Cost Centers) when touching money or reporting.
+
+## Memberships
+
+- Link memberships to **Subscription** (ERPNext or custom) when the feature requires billing periods.
+
+## Socio estado and Vitalicio
+
+- **`estado`** is read-only in UI; changes via **`validar_socio`**, correction flows, or automated **Vitalicio** rules—not free editing.
+- **Vitalicio** after **25 years** from **`fecha_alta`**; **cuota** resolved as **0** for that category.
+
+## Next sprint (reference)
+
+Plan **“Socios categoría validación y panel Secretaría”**: cuota table in **Club Settings**, **Grupo Familiar**, **`fecha_alta`**, scheduled promotion to Vitalicio, Report + Workspace **Secretaría**, **`after_install`** default workspace for role **Secretaria**. Spec: **`club_management/specs/socios_categoria_validacion.md`** (paquete de la app; en Bench es `apps/club_management/club_management/specs/`).

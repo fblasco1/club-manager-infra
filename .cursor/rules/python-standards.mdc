@@ -1,0 +1,17 @@
+---
+description: Python 3.14 for club_management — typing, imports, ruff, exceptions.
+globs:
+  - "apps/club_management/**/*.py"
+  - "development/frappe-bench/apps/club_management/**/*.py"
+alwaysApply: false
+---
+
+# Python Standards
+
+- **Version:** 3.14 (match the Frappe v16 runtime in Docker/bench; see `pyproject.toml` `requires-python = ">=3.14"`).
+- **Type hints** on public functions and Document methods where useful.
+- **Naming:** `snake_case` for functions and variables; PascalCase for classes matching DocType names.
+- **Imports:** stdlib → **frappe** → **erpnext** (if used) → **club_management**.
+- **i18n:** user-visible strings via `frappe._()`.
+- **Lint/format:** **ruff**, **pyupgrade** via pre-commit.
+- **Exceptions:** never bare `except:`; catch specific types or `frappe.ValidationError` / `frappe.PermissionError` as appropriate.
