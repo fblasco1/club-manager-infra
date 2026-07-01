@@ -28,3 +28,10 @@ venv
 
 # NodeJS
 node_modules
+
+# Claves SSH locales (nunca commitear)
+hetzner_key
+**/hetzner_key
+
+# Datos locales de migración (CSV con PII)
+tmp/
