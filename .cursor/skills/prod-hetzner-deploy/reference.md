@@ -78,6 +78,8 @@ Contraseñas: en `/root/.icdpe-secrets.env` del servidor (`ARIELA_PASSWORD`, `MI
 
 | Síntoma | Causa probable | Acción |
 |---------|----------------|--------|
+| `git push` timeout / `Could not connect to github.com` en WSL | WSL sin HTTPS | `./scripts/https-preflight.sh`; luego `scripts/win/git-push.ps1` desde PowerShell |
+| rclone / Drive timeout desde WSL | Misma red WSL | `./scripts/publish-dev-session.sh` o `sync-pm-ai-to-drive.ps1` en Windows |
 | 404 en `club_management.bundle.*.js` | Frontend con `assets.json` viejo | Sync assets.json (arriba) + recrear frontend |
 | Dashboard sin estilos nuevos | CSS no en bundle SCSS | `bench build`; verificar `public/scss/club_management.bundle.scss` importa parciales |
 | Sidebar vacía | boot sin ítems Secretaría | `bench execute club_management.members.setup.secretaria_workspace_sidebar.sync_secretaria_workspace_sidebar` |
