@@ -38,7 +38,9 @@ DC="docker compose -f compose.yaml -f overrides/compose.postgres.yaml -f overrid
 # de un archivo (sync de assets), que mantienen su propio '< archivo'.
 
 echo "==> Actualizar app en backend"
-\$DC exec -T backend bash -lc "cd apps/club_management && git fetch upstream $APP_BRANCH && git reset --hard upstream/$APP_BRANCH && git log -1 --oneline" </dev/null
+$DC exec -T backend git -C /home/frappe/frappe-bench/apps/club_management fetch upstream "$APP_BRANCH"
+$DC exec -T backend git -C /home/frappe/frappe-bench/apps/club_management reset --hard "upstream/$APP_BRANCH"
+$DC exec -T backend git -C /home/frappe/frappe-bench/apps/club_management log -1 --oneline
 
 if [[ "$SKIP_MIGRATE" != "1" ]]; then
 	echo "==> bench migrate"
