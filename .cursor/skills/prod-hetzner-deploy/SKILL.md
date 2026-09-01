@@ -241,6 +241,7 @@ Desk: hard refresh (`Ctrl+Shift+R`) en `/desk/secretaría` si el browser ya ten�
 | Script | Uso |
 |--------|-----|
 | `scripts/prod/deploy-club-management.sh` | Deploy código + build + frontend |
+| `scripts/prod/apply-cobranza-informe.sh` | Pipeline cobranza informe Excel (`--dry-run` / `--prep-only` / `--apply`) |
 | `scripts/prod/prepare-ssh-key.sh` | Copiar clave Windows → `/tmp/hetzner_key` |
 | `scripts/prod/restart-bench.sh remote` | Reinicio bench + build sin pull |
 | `scripts/prod/migrate-socios-dashboard.sh` | Backup/restore masivo de datos |
