@@ -1,0 +1,53 @@
+---
+description: >-
+  Generar o actualizar sync-pm-ai.md para el PM AI (Gemini Spark). Aplicar cuando
+  el usuario pida "sync para PM", "generar sync", sincronizar estado con PM, o al
+  cerrar un hito (deploy, go-live, cierre de sprint).
+globs:
+  - "docs/club/sync-pm-ai.md"
+  - "docs/club/sync-pm-ai-protocol.md"
+alwaysApply: false
+---
+
+# Sync PM AI — Regla Cursor
+
+Protocolo completo: **`docs/club/sync-pm-ai-protocol.md`**.  
+Artefactos: **`docs/club/sync-pm-ai.md`** (PM AI) y **`docs/club/bitacora-de-desarrollo.md`** → Google Drive *Sistema de Gestion - ERP CLUBES*.
+
+## Cuándo ejecutar
+
+- Usuario pide «generar sync para PM», «actualizar sync-pm-ai», «sincronizar con PM AI».
+- Al **finalizar un hito** (deploy Hetzner, merge de épica, go-live portal, cierre de sprint Spaces).
+- Al **cerrar sesión de chat** en Cursor: el hook `sessionEnd` corre `./scripts/publish-dev-session.sh` (bitácora + Drive).
+
+## Procedimiento (obligatorio)
+
+1. **Relevar git** en app (`development/frappe-bench/apps/club_management/`), infra (raíz) y landing (`pedro-echague-landing-page/` si existe):
+   - rama actual, `git log -1`, diff vs `origin`, untracked, `git stash list`.
+   - HEAD documentado en prod vs local (gap local→prod).
+2. **Contrastar con specs** — leer `club_management/specs/backlog_implementacion.md` y specs del módulo activo; clasificar cada ítem:
+   - **Done (prod)** — Hetzner / Vercel Production operativo.
+   - **Done (código)** — en origin o commit local; puede no estar en prod.
+   - **In Progress** — dirty, untracked, stash, sin deploy.
+   - **Backlog** — spec sin implementación de producto.
+3. **Blockers y dependencias** — APIs sin doc (Cobrand/Supervielle), datos de terceros (FMV, Excel Coordinación), credenciales, HEAD prod no verificado.
+4. **Generar/actualizar** `docs/club/sync-pm-ai.md`:
+   - Fecha de corte del día.
+   - Mantener secciones estándar (semáforo, gap, avances §1, prioridades §2, reglas §3, blockers §4, mensaje 5 líneas §6).
+   - No inventar endpoints de pago; SIRO retirado.
+
+## Ejes de contenido (los 4 del PO)
+
+| Eje | Sección en sync |
+|-----|-----------------|
+| Avances en código | §1 Avances reales (DocTypes, integraciones, Done vs In Progress) |
+| Prioridades backlog | §2 Nuevas prioridades (P0…Pn) |
+| Reglas de negocio / arquitectura | §3 Cambios |
+| Blockers y decisiones | §4 Blockers |
+
+## Después de escribir
+
+- Manual: `./scripts/publish-dev-session.sh` (bitácora ← sync + subida Drive).
+- Automático al cerrar sesión Cursor: hook `.cursor/hooks/publish-dev-session.sh` (`sessionEnd`).
+- Si WSL no tiene HTTPS: `.\scripts\sync-pm-ai-to-drive.ps1` desde PowerShell Windows.
+- Config: `docs/club/example.sync-pm-ai.env` → `.env.sync-pm-ai` (gitignored).

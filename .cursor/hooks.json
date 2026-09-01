@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionEnd": [
+      {
+        "command": ".cursor/hooks/publish-dev-session.sh",
+        "timeout": 120
+      }
+    ]
+  }
+}

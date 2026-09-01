@@ -1,5 +1,12 @@
 # Environment Variables
 .env
+.env.sync-pm-ai
+.cursor/hooks/publish-dev-session.log
+
+# Google Drive / sync PM AI (nunca commitear credenciales)
+secrets/
+**/google-drive-service-account.json
+**/.config/club_manager/
 
 # mounted volume
 sites
@@ -35,3 +42,4 @@ hetzner_key
 
 # Datos locales de migración (CSV con PII)
 tmp/
+backups/
