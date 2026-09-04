@@ -67,8 +67,8 @@ echo "==> Recrear frontend + websocket"
 echo "==> Sync assets.json backend → frontend"
 \$DC exec -T backend cat /home/frappe/frappe-bench/sites/assets/assets.json </dev/null > /tmp/assets.json
 \$DC exec -T backend cat /home/frappe/frappe-bench/sites/assets/assets-rtl.json </dev/null > /tmp/assets-rtl.json
-\$DC exec -T frontend bash -lc 'cat > /home/frappe/frappe-bench/sites/assets/assets.json' < /tmp/assets.json
-\$DC exec -T frontend bash -lc 'cat > /home/frappe/frappe-bench/sites/assets/assets-rtl.json' < /tmp/assets-rtl.json
+\$DC exec -T -u root frontend bash -lc 'cat > /home/frappe/frappe-bench/sites/assets/assets.json' < /tmp/assets.json
+\$DC exec -T -u root frontend bash -lc 'cat > /home/frappe/frappe-bench/sites/assets/assets-rtl.json' < /tmp/assets-rtl.json
 
 echo "==> Assets en backend:"
 \$DC exec -T backend grep club_management /home/frappe/frappe-bench/sites/assets/assets.json </dev/null || true
