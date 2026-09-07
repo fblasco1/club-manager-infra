@@ -53,16 +53,15 @@ echo "==> bench build club_management"
 echo "==> clear-cache"
 \$DC exec -T backend bench --site '$PROD_SITE' clear-cache </dev/null || true
 
-echo "==> Restart backend + workers (recarga código Python)"
-# bench restart devuelve no-cero en este setup; el reinicio real es el docker compose restart.
+echo "==> docker commit → $DOCKER_IMAGE (apps viven en la imagen, no en volumen)"
+# bench restart devuelve no-cero en este setup; el reinicio real es recreate desde la imagen.
 \$DC exec -T backend bench restart </dev/null || true
-\$DC restart backend queue-short queue-long scheduler </dev/null
-
-echo "==> docker commit → $DOCKER_IMAGE"
 docker commit "\$(docker ps -qf name=backend)" "$DOCKER_IMAGE"
 
-echo "==> Recrear frontend + websocket"
-\$DC up -d --force-recreate --no-deps frontend websocket </dev/null
+echo "==> Recrear backend + workers + scheduler + frontend (código nuevo en imagen)"
+# IMPORTANTE: \`restart\` no basta — queue/scheduler no comparten el filesystem de
+# apps con backend; sin recreate quedan sin módulos nuevos (p.ej. scheduler_postgres).
+\$DC up -d --force-recreate --no-deps backend queue-short queue-long scheduler frontend websocket </dev/null
 
 echo "==> Sync assets.json backend → frontend"
 \$DC exec -T backend cat /home/frappe/frappe-bench/sites/assets/assets.json </dev/null > /tmp/assets.json
